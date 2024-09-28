@@ -1,0 +1,6 @@
+@MinimalBankAPI.API_HostAddress = http://localhost:5299
+
+GET {{MinimalBankAPI.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
