@@ -85,22 +85,18 @@ namespace MinimalBankAPI.DataAccess.Repositories.Concrete.Base
             return await queryable.ToListAsync();
         }
 
-        //public async Task<IPaginate<T>> GetAllByPagingAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, bool enableTracking = false, int currentPage = 1, int pageSize = 10)
-        //{
-        //    IQueryable<T> queryable = __table;
-        //    if (!enableTracking)
-        //        queryable = queryable.AsNoTracking();
-        //    if (include is not null) queryable = include(queryable);
-        //    if (predicate is not null) queryable = queryable.Where(predicate);
-        //    if (orderBy is not null)
-        //    {
-        //        var x = orderBy(queryable).Skip((currentPage - 1) * pageSize).Take(pageSize);
-        //        return x.ToPaginate<T>(index: currentPage, size: pageSize);
+        public async Task<IList<T>> GetAllByPagingAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, bool enableTracking = false, int currentPage = 1, int pageSize = 10)
+        {
+            IQueryable<T> queryable = __table;
+            if (!enableTracking)
+                queryable = queryable.AsNoTracking();
+            if (include is not null) queryable = include(queryable);
+            if (predicate is not null) queryable = queryable.Where(predicate);
+            if (orderBy is not null)
+                return await orderBy(queryable).Skip((currentPage - 1) * pageSize).Take(pageSize).ToListAsync();
 
-        //    }
-        //    var result = queryable.Skip((currentPage - 1) * pageSize).Take(pageSize);
-        //    return result.ToPaginate<T>(index: currentPage, size: pageSize);
-        //}
+            return await queryable.Skip((currentPage - 1) * pageSize).Take(pageSize).ToListAsync();
+        }
 
         public async Task<IList<T>> GetWithFiltersAsync(Expression<Func<T, bool>>? predicate = null,
                                                  Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
