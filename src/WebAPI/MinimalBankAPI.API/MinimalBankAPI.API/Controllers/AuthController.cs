@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MinimalBankAPI.Bussines.Features.Auth.Dtos;
 using MinimalBankAPI.Bussines.Features.Auth.Services;
+using MinimalBankAPI.Bussines.Features.Roles.Dtos;
 
-namespace MinimalBankAPI.API.Controllers
+namespace MinimalBankAPI.WebAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -20,11 +20,18 @@ namespace MinimalBankAPI.API.Controllers
             var result = await _service.LoginAsync(dto);
             return Ok(result);
         }
+        //[HttpPost]
+        //public async Task<IActionResult> Revoke([FromBody] RevokeDto dto)
+        //{
+        //    await _service.RevokeAsync(dto);
+        //    return Ok();
+        //}
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+        public async Task<IActionResult> RevokeAll()
         {
-            var result = await _service.RegisterAsync(dto);
-            return Ok(result);
+            await _service.RevokeAllAsync();
+            return Ok();
         }
+
     }
 }

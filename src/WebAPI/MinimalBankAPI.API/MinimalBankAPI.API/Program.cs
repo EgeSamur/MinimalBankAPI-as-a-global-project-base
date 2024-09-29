@@ -1,5 +1,6 @@
 using MinimalBankAPI.CrossCuttingConcerns;
 using MinimalBankAPI.Security;
+using MinimalBankAPI.Bussines;
 //using MinimalBankAPI.Bussines;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +14,8 @@ builder.Services.AddSwaggerGen();
 
 
 //// AddDataLayerDPIs methodunu çaðýrýyoruz
-//builder.Services.AddDataLayerDPIs(builder.Configuration);
-//builder.Services.AddBussinesLayer();
+builder.Services.AddDataLayerDPIs(builder.Configuration);
+builder.Services.AddBussinesLayer();
 
 //Katman Registrationlarý
 builder.Services.AddCrossCuttingConcern();

@@ -25,6 +25,8 @@ namespace MinimalBankAPI.DataAccess.Repositories.Abstract.Base
                                                  Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
                                                  bool enableTracking = false,
                                                  Dictionary<string, object>? filters = null);
+
+        Task<IList<T>> GetAllByPagingAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, bool enableTracking = false, int currentPage = 1, int pageSize = 10);
         Task AddAsync(T entity);
         Task AddRangeAsync(IList<T> entities);
         Task<T> UpdateAsync(T entity);
