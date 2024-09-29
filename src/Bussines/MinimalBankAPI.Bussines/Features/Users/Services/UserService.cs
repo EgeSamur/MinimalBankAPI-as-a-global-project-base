@@ -58,25 +58,25 @@ namespace MinimalBankAPI.Bussines.Features.Users.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<List<UserDto>> GetListAsync()
-        {
-            int size = 2147483647;
-            var index = 1;
-            var users = await _userRepository.GetAllByPagingAsync(
-                currentPage: index,
-                pageSize: size,
-                include: i => i
-                    .Include(x => x.UserRoles)
-                    .ThenInclude(x => x.Role)
-                    .ThenInclude(x=>x.RoleOperationClaims) 
-                    .ThenInclude(x=>x.OperationClaim),
-                predicate: i => 
-                   i.IsDeleted == false,
-                orderBy: i => i.OrderBy(x => x.CreatedDate)
-            );;
-            var result = _mapper.Map<List<UserDto>>(users);
-            return result;
-        }
+        //public async Task<List<UserDto>> GetListAsync()
+        //{
+        //    int size = 2147483647;
+        //    var index = 1;
+        //    var users = await _userRepository.GetAllByPagingAsync(
+        //        currentPage: index,
+        //        pageSize: size,
+        //        include: i => i
+        //            .Include(x => x.UserRoles)
+        //            .ThenInclude(x => x.Role)
+        //            .ThenInclude(x=>x.RoleOperationClaims) 
+        //            .ThenInclude(x=>x.OperationClaim),
+        //        predicate: i => 
+        //           i.IsDeleted == false,
+        //        orderBy: i => i.OrderBy(x => x.CreatedDate)
+        //    );;
+        //    var result = _mapper.Map<List<UserDto>>(users);
+        //    return result;
+        //}
 
         public async Task ResetPasswordAsync(ResetPasswordDto dto)
         {
@@ -131,9 +131,24 @@ namespace MinimalBankAPI.Bussines.Features.Users.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        Task<IList<UserDto>> IUserService.GetListAsync()
+        public async Task<IList<UserDto>> GetListAsync()
         {
-            throw new NotImplementedException();
+            int size = 2147483647;
+            var index = 1;
+            var users = await _userRepository.GetAllByPagingAsync(
+                currentPage: index,
+                pageSize: size,
+                include: i => i
+                    .Include(x => x.UserRoles)
+                    .ThenInclude(x => x.Role)
+                    .ThenInclude(x => x.RoleOperationClaims)
+                    .ThenInclude(x => x.OperationClaim),
+                predicate: i =>
+                   i.IsDeleted == false,
+                orderBy: i => i.OrderBy(x => x.CreatedDate)
+            ); ;
+            var result = _mapper.Map<List<UserDto>>(users);
+            return result;
         }
     }
 }
